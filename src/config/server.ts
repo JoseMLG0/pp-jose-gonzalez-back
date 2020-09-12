@@ -26,6 +26,7 @@ class CreateServer {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.routes.initRoutes(this.app);
+        this.validateFirstUse();
     }
 
     private async initDataBase() {
@@ -34,6 +35,20 @@ class CreateServer {
         mongoose.set('useCreateIndex', true);
         mongoose.set('useUnifiedTopology', true);
         await mongoose.connect('mongodb://localhost:27017/packpack');
+    }
+
+    private async validateFirstUse() {
+        if (await mongoose.model('Users').countDocuments() === 0) {
+            const UserModel = mongoose.model('Users');
+
+            const newUser = new UserModel({
+                user: 'admin',
+                password: 'admin',
+                name: 'admin',
+                email: 'admin@admin.com'
+            });
+            await newUser.save();
+        }
     }
 
     public getApp() {
