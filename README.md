@@ -8,4 +8,4 @@ npm run start:dev
 Por defecto el sistema creara un usuario inicial para poder acceder
 
 Usuario: admin
-Passwprd: admin
+Password: admin
